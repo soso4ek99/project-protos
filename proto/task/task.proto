@@ -1,6 +1,6 @@
 syntax = "proto3";
 package task;
-option go_package = "github.com/soso4ek99/project-protos\proto\task"; // Указываем пакет Go, в котором будет сгенерирован код
+option go_package = "github.com/soso4ek99/project-protos/proto/task"; // Указываем пакет Go, в котором будет сгенерирован код
 
 // Сущность задача
 message Task {
