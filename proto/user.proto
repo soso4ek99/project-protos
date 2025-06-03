@@ -1,0 +1,55 @@
+syntax = "proto3";
+package user;
+option go_package = "github.com/soso4ek99/project-protos/proto/user"; // Указываем пакет Go, в котором будет сгенерирован код
+
+// Сущность пользователь (минимум полей)
+message User {
+  uint32 id    = 1;   // Уникальный идентификатор пользователя
+  string email = 2;  // Адрес электронной почты пользователя
+}
+
+// Запрос на создание пользователя
+message CreateUserRequest {
+  string email = 1;  // Адрес электронной почты для создания пользователя
+}
+
+// Ответ при создании пользователя
+message CreateUserResponse {
+  User user = 1;  // Созданный пользователь
+}
+
+// Запрос на обновление пользователя
+message UpdateUserRequest {
+  uint32 id    = 1;   // ID пользователя для обновления
+  string email = 2;  // Новый адрес электронной почты
+}
+
+// Ответ при обновлении пользователя
+message UpdateUserResponse {
+  User user = 1;  // Обновленный пользователь
+}
+
+// Запрос на удаление пользователя
+message DeleteUserRequest {
+  uint32 id = 1;  // ID пользователя для удаления
+}
+
+// Ответ при удалении пользователя (пустой, так как нет данных для возврата)
+message DeleteUserResponse {}
+
+// Запрос на получение списка пользователей
+message ListUsersRequest {}
+
+// Ответ при получении списка пользователей
+message ListUsersResponse {
+  repeated User users = 1;  // Список пользователей
+}
+
+// Определение gRPC сервиса для управления пользователями
+service UserService {
+  rpc CreateUser (CreateUserRequest) returns (CreateUserResponse);  // Создание пользователя
+  rpc GetUser    (User)              returns (User);             // Получение пользователя по ID (исправлено)
+  rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse);  // Обновление пользователя
+  rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse);  // Удаление пользователя
+  rpc ListUsers  (ListUsersRequest) returns (ListUsersResponse);  // Получение списка пользователей
+}

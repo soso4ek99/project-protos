@@ -1,0 +1,58 @@
+syntax = "proto3";
+package task;
+option go_package = "github.com/soso4ek99/project-protos\proto\task"; // Указываем пакет Go, в котором будет сгенерирован код
+
+// Сущность задача
+message Task {
+  uint32 id      = 1;   // Уникальный идентификатор задачи
+  string title   = 2;   // Заголовок задачи
+  string description = 3; // Description of the task
+}
+
+// Запрос на создание задачи
+message CreateTaskRequest {
+  string title = 1;   // Заголовок задачи для создания
+  string description = 2; // Description of the task
+}
+
+// Ответ при создании задачи
+message CreateTaskResponse {
+  Task task = 1;  // Созданная задача
+}
+
+// Запрос на обновление задачи
+message UpdateTaskRequest {
+  uint32 id      = 1;   // ID задачи для обновления
+  string title   = 2;   // Новый заголовок задачи
+    string description = 3; // New description of the task
+}
+
+// Ответ при обновлении задачи
+message UpdateTaskResponse {
+  Task task = 1;  // Обновленная задача
+}
+
+// Запрос на удаление задачи
+message DeleteTaskRequest {
+  uint32 id = 1;  // ID задачи для удаления
+}
+
+// Ответ при удалении задачи (пустой, так как нет данных для возврата)
+message DeleteTaskResponse {}
+
+// Запрос на получение списка задач
+message ListTasksRequest {}
+
+// Ответ при получении списка задач
+message ListTasksResponse {
+  repeated Task tasks = 1;  // Список задач
+}
+
+// Определение gRPC сервиса для управления задачами
+service TaskService {
+  rpc CreateTask (CreateTaskRequest) returns (CreateTaskResponse);  // Создание задачи
+  rpc GetTask    (Task)             returns (Task);             // Получение задачи по ID (исправлено)
+  rpc UpdateTask (UpdateTaskRequest) returns (UpdateTaskResponse);  // Обновление задачи
+  rpc DeleteTask (DeleteTaskRequest) returns (DeleteTaskResponse);  // Удаление задачи
+  rpc ListTasks  (ListTasksRequest) returns (ListTasksResponse);  // Получение списка задач
+}
