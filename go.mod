@@ -1,10 +1,10 @@
-module github.com/soso4ek99/project-prot
+module github.com/soso4ek99/project-protos
 
 go 1.23.5
 
 require (
 	google.golang.org/grpc v1.72.2
-	google.golang.org/protobuf v1.36.6
+	google.golang.org/protobuf v1.36.5
 )
 
 require (
