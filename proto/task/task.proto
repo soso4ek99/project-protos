@@ -4,15 +4,18 @@ option go_package = "github.com/soso4ek99/project-protos/proto/task"; // Ука�
 
 // Сущность задача
 message Task {
-  uint32 id      = 1;   // Уникальный идентификатор задачи
-  string title   = 2;   // Заголовок задачи
-  string description = 3; // Description of the task
+  uint32 id      = 1;       // Уникальный идентификатор задачи
+  uint32 userId  = 2;       // ID пользователя, которому принадлежит задача
+  string title   = 3;       // Заголовок задачи
+  string description = 4;  // Описание задачи
+  bool   isDone  = 5;       // Статус выполнения задачи (true = выполнена)
 }
 
 // Запрос на создание задачи
 message CreateTaskRequest {
-  string title = 1;   // Заголовок задачи для создания
-  string description = 2; // Description of the task
+  uint32 userId = 1;   // ID пользователя, создающего задачу
+  string title = 2;    // Заголовок задачи
+  string description = 3; // Описание задачи
 }
 
 // Ответ при создании задачи
@@ -20,11 +23,17 @@ message CreateTaskResponse {
   Task task = 1;  // Созданная задача
 }
 
+// Запрос на получение задачи по ID
+message GetTaskRequest {
+    uint32 id = 1; // ID задачи для получения
+}
+
 // Запрос на обновление задачи
 message UpdateTaskRequest {
-  uint32 id      = 1;   // ID задачи для обновления
-  string title   = 2;   // Новый заголовок задачи
-    string description = 3; // New description of the task
+  uint32 id      = 1;       // ID задачи для обновления
+  string title   = 2;       // Новый заголовок задачи
+  string description = 3;  // Новое описание задачи
+  bool   isDone  = 4;       // Новый статус выполнения задачи
 }
 
 // Ответ при обновлении задачи
@@ -37,22 +46,28 @@ message DeleteTaskRequest {
   uint32 id = 1;  // ID задачи для удаления
 }
 
-// Ответ при удалении задачи (пустой, так как нет данных для возврата)
+// Ответ при удалении задачи
 message DeleteTaskResponse {}
 
-// Запрос на получение списка задач
+// Запрос на получение списка всех задач
 message ListTasksRequest {}
 
-// Ответ при получении списка задач
+// Ответ при получении списка всех задач
 message ListTasksResponse {
   repeated Task tasks = 1;  // Список задач
 }
 
-// Определение gRPC сервиса для управления задачами
+// Запрос на получение списка задач по ID пользователя
+message ListTasksByUserRequest {
+  uint32 userId = 1;  // ID пользователя, для которого нужно получить задачи
+}
+
+// Сервис для управления задачами
 service TaskService {
-  rpc CreateTask (CreateTaskRequest) returns (CreateTaskResponse);  // Создание задачи
-  rpc GetTask    (Task)             returns (Task);             // Получение задачи по ID (исправлено)
-  rpc UpdateTask (UpdateTaskRequest) returns (UpdateTaskResponse);  // Обновление задачи
-  rpc DeleteTask (DeleteTaskRequest) returns (DeleteTaskResponse);  // Удаление задачи
-  rpc ListTasks  (ListTasksRequest) returns (ListTasksResponse);  // Получение списка задач
+  rpc CreateTask      (CreateTaskRequest)      returns (CreateTaskResponse);
+  rpc GetTask         (GetTaskRequest)         returns (Task);
+  rpc UpdateTask      (UpdateTaskRequest)      returns (UpdateTaskResponse);
+  rpc DeleteTask      (DeleteTaskRequest)      returns (DeleteTaskResponse);
+  rpc ListTasks       (ListTasksRequest)       returns (ListTasksResponse);
+  rpc ListTasksByUser (ListTasksByUserRequest) returns (ListTasksResponse);
 }
